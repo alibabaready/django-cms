@@ -58,7 +58,11 @@ class PageAddForm(forms.ModelForm):
             [name for name, value in settings.CMS_TEMPLATES]:
             # non-root pages default to inheriting their template
             self.fields['template'].initial = settings.CMS_TEMPLATE_INHERITANCE_MAGIC
-        
+            
+        if settings.CMS_GROUPS_RESTRICTED and settings.CMS_GROUPS_RESTRICTED_INHERITANCE and self.fields['parent'].initial:
+            parent = Page.objects.get(pk=self.fields['parent'].initial)
+            self.fields['groups_required'].initial = parent.groups_required.values_list('id', flat=True)
+            
     def clean(self):
         cleaned_data = self.cleaned_data
         if 'slug' in cleaned_data.keys():

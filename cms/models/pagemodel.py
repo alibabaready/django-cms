@@ -6,6 +6,7 @@ from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _, get_language, ugettext
 from django.core.urlresolvers import reverse
 from django.contrib.sites.models import Site
+from django.contrib.auth.models import Group
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.functional import lazy
@@ -69,6 +70,7 @@ class Page(MpttPublisher):
     tree_id = models.PositiveIntegerField(db_index=True, editable=False)
     
     login_required = models.BooleanField(_("login required"),default=False)
+    groups_required = models.ManyToManyField(Group, default=None, null=True, blank=True)
     limit_visibility_in_menu = models.SmallIntegerField(_("menu visibility"), default=None, null=True, blank=True, choices=LIMIT_VISIBILITY_IN_MENU_CHOICES, db_index=True, help_text=_("limit when this page is visible in the menu"))
     
     # Placeholders (plugins)
@@ -270,7 +272,7 @@ class Page(MpttPublisher):
             self.changed_by = "script"
         if not self.pk:
             self.created_by = self.changed_by 
-        
+
         if commit:
             if no_signals:# ugly hack because of mptt
                 super(Page, self).save_base(cls=self.__class__, **kwargs)

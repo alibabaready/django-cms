@@ -18,6 +18,7 @@ def page_to_node(page, home, cut):
     #    parent_id = None # ????
     attr = {'soft_root':page.soft_root,
             'auth_required':page.login_required,
+            'groups_required':page.groups_required,
             'reverse_id':page.reverse_id,}
     if page.limit_visibility_in_menu == None:
         attr['visible_for_authenticated'] = True
