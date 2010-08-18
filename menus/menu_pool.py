@@ -158,5 +158,21 @@ class MenuPool(object):
             if node.attr.get(name, None) == value:
                 found.append(node)
         return found
-     
+        
+##=============================##
+# get_nodes_by_groupname method #
+##=============================##
+
+    def get_nodes_by_groupname(self, nodes, groupname):
+        from cms.models.pagemodel import NavigationGroup
+        found = []
+        navgroup = NavigationGroup.objects.get(slug=groupname)
+        for node in nodes:
+            for page in navgroup.pages.all():
+                if node.attr['page_id'] == page.id:
+                    if navgroup.additional_css_class:
+                        node.attr['nav_css'] = navgroup.additional_css_class
+                    found.append(node)
+        return found        
+        
 menu_pool = MenuPool()

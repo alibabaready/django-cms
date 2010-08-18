@@ -10,6 +10,7 @@ from cms.forms.widgets import PluginEditor
 from cms.models import Page, Title, CMSPlugin, PagePermission, \
     PageModeratorState, EmptyTitle, GlobalPagePermission
 from cms.models.managers import PagePermissionsPermissionManager
+from cms.models.pagemodel import NavigationGroup
 from cms.models.moderatormodels import MASK_PAGE, MASK_CHILDREN, \
     MASK_DESCENDANTS
 from cms.models.placeholdermodel import Placeholder
@@ -1338,4 +1339,27 @@ class PageAdmin(model_admin):
                 return render_admin_menu_item(request, page)
         raise Http404
 
+##====================##
+# NavigationGroupAdmin #
+##====================##
+
+class PageInline(admin.TabularInline):
+    model = NavigationGroup.pages.through
+    
+class NavigationGroupAdmin(admin.ModelAdmin):
+    list_display = ('name', 'slug')
+    search_fields = ('name',)
+    prepopulated_fields = {'slug': ('name',)}
+    fieldsets = [
+        (None, {
+            'fields': ('name', 'slug', 'additional_css_class'),
+            'classes': ('general',),
+        }),
+    ]
+    inlines = [
+        PageInline,
+    
+    ]
+    
+admin.site.register(NavigationGroup, NavigationGroupAdmin)
 admin.site.register(Page, PageAdmin)

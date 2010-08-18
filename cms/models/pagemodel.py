@@ -1,6 +1,7 @@
 from cms.exceptions import NoHomeFound
 from cms.models.managers import PageManager, PagePermissionsPermissionManager
 from cms.models.placeholdermodel import Placeholder
+from cms.models.pagemodel import Page
 from cms.utils.helpers import reversion_register
 from cms.utils.i18n import get_fallback_languages
 from cms.utils.page import get_available_slug, check_title_slugs
@@ -704,5 +705,29 @@ class Page(MpttPublisher):
         self._moderation_value_cache_for_user_id = user
             
         return moderation_value 
+
+##=====================##
+# NavigationGroup Model #
+##=====================##
+
+class NavigationGroup(models.Model):
+        
+    name = models.CharField(_('Display name'), max_length=30, null=False, blank=False, help_text=_('Human-readable group name'))
+    slug = models.SlugField(_('System name'), null=False, blank=False, help_text=_('Identification group name'))
+    additional_css_class = models.CharField(_('CSS class'), max_length=30, null=True, blank=True, help_text=_('Additional CSS class for all elements'))
+    
+    pages = models.ManyToManyField(Page, verbose_name=_('Pages'), help_text=_('Nodes for this navigation group'))
+    
+    class Meta:
+        verbose_name = _('navigation group')
+        verbose_name_plural = _('navigation groups')
+        ordering = ('name',)
+        app_label = 'cms'
+        
+    def __unicode__(self):        
+        return self.name
+        
+    def __str__(self):
+        return self.name
         
 reversion_register(Page, follow=["title_set", "placeholders", "pagepermission_set"])

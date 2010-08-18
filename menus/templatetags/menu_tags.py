@@ -297,3 +297,52 @@ def page_language_url(context, lang):
             url = ''
     return {'content':url}
 page_language_url = register.inclusion_tag('cms/content.html', takes_context=True)(page_language_url)
+
+##==========================##
+# show_menu_by_groupname tag #
+##==========================##
+
+def show_menu_by_groupname(context, groupname, template="menu/menu_group.html", from_level=0, to_level=0, extra_inactive=0, extra_active=0, namespace=None ):
+    """
+    Displays a menu based on giver navigation group name
+        - groupname: system name of navigation group to display
+        - template: template used to render menu
+            * default: 'menu/menu_group.html' -> displays only selected elements,
+                                                 without descendants
+            * use: 'menu/menu.html'           -> to display all elements with
+                                                 with descendants
+        - from_level: starting level
+        - to_level: max level
+        - extra_inactive: how many levels should be rendered of the not active tree?
+        - extra_active: how deep should the children of the active node be rendered?
+        - namespace: the namespace of the menu. if empty will use all namespaces
+    """
+    try:
+        # If there's an exception (500), default context_processors may not be called.
+        request = context['request']
+    except KeyError:
+        return {'template': 'menu/empty.html'}
+    
+    nodes = menu_pool.get_nodes(request)
+    children = groupname and menu_pool.get_nodes_by_groupname(nodes, groupname) or [] 
+    children = menu_pool.apply_modifiers(children, request, namespace, post_cut=True)
+    
+    try:
+        css = children[0].attr['nav_css']
+    except:
+        css = None
+        
+    try:
+        context.update({'children':children,
+                        'template':template,
+                        'from_level':from_level,
+                        'to_level':to_level,
+                        'extra_inactive':extra_inactive,
+                        'extra_active':extra_active,
+                        'namespace':namespace,
+                        'group':groupname,
+                        'nav_css': css})
+    except:
+        context = {"template":template}
+    return context
+show_menu_by_groupname = register.inclusion_tag('menu/dummy.html', takes_context=True)(show_menu_by_groupname)
