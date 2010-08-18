@@ -19,7 +19,9 @@ def page_to_node(page, home, cut):
     attr = {'soft_root':page.soft_root,
             'auth_required':page.login_required,
             'groups_required':page.groups_required,
-            'reverse_id':page.reverse_id,}
+            'reverse_id':page.reverse_id,
+            'css_class': page.css_class,
+            'css_id': page.css_id}
     if page.limit_visibility_in_menu == None:
         attr['visible_for_authenticated'] = True
         attr['visible_for_anonymous'] = True

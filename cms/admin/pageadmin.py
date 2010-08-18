@@ -95,6 +95,8 @@ class PageAdmin(model_admin):
         additional_hidden_fields.extend(('moderator_state', 'moderator_message'))
     if settings.CMS_SEO_FIELDS:
         seo_fields = ('page_title', 'meta_description', 'meta_keywords')
+    if settings.CMS_CUSTOM_CSS_FIELDS:
+        css_fields = ('css_class', 'css_id')
     if settings.CMS_MENU_TITLE_OVERWRITE:
         general_fields[0] = ('title', 'menu_title')
     if not settings.CMS_URL_OVERWRITE:
@@ -147,6 +149,12 @@ class PageAdmin(model_admin):
                           'classes': ('collapse',),
                         }))
 
+    if settings.CMS_CUSTOM_CSS_FIELDS:
+        fieldsets.append((_("CSS Settings"), {
+                            'fields':css_fields,
+                            'classes': ('collapse',),
+                        }))
+                        
     inlines = PAGE_ADMIN_INLINES
 
     class Media:
@@ -319,6 +327,9 @@ class PageAdmin(model_admin):
             if settings.CMS_SEO_FIELDS:
                 seo = given_fieldsets.pop(3)
                 given_fieldsets.append(seo)
+            if settings.CMS_CUSTOM_CSS_FIELDS:
+                css = given_fieldsets.pop(3)
+                given_fieldsets.append(css)
         else: # new page
             given_fieldsets = deepcopy(self.add_fieldsets)
 
