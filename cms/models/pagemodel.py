@@ -1,7 +1,6 @@
 from cms.exceptions import NoHomeFound
 from cms.models.managers import PageManager, PagePermissionsPermissionManager
 from cms.models.placeholdermodel import Placeholder
-from cms.models.pagemodel import Page
 from cms.utils.helpers import reversion_register
 from cms.utils.i18n import get_fallback_languages
 from cms.utils.page import get_available_slug, check_title_slugs
