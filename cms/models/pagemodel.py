@@ -8,6 +8,7 @@ from cms.utils.urlutils import urljoin
 from datetime import datetime
 from django.conf import settings
 from django.contrib.sites.models import Site
+from django.contrib.auth.models import Group
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.db import models
@@ -69,6 +70,7 @@ class Page(MpttPublisher):
     tree_id = models.PositiveIntegerField(db_index=True, editable=False)
     
     login_required = models.BooleanField(_("login required"),default=False)
+    groups_required = models.ManyToManyField(Group, default=None, null=True, blank=True)
     limit_visibility_in_menu = models.SmallIntegerField(_("menu visibility"), default=None, null=True, blank=True, choices=LIMIT_VISIBILITY_IN_MENU_CHOICES, db_index=True, help_text=_("limit when this page is visible in the menu"))
     
     # Placeholders (plugins)

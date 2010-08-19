@@ -81,6 +81,10 @@ class PageAdmin(model_admin):
     if settings.CMS_SOFTROOT:
         advanced_fields.append('soft_root')
         list_filter.append('soft_root')
+    if settings.CMS_GROUPS_RESTRICTED:
+        advanced_fields.append('groups_required')
+        add_general_fields.append('groups_required')
+        list_filter.append('groups_required')
     if settings.CMS_SHOW_START_DATE and settings.CMS_SHOW_END_DATE:
         general_fields.append(('publication_date', 'publication_end_date'))
     elif settings.CMS_SHOW_START_DATE:

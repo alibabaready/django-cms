@@ -24,6 +24,9 @@ CMS_PLACEHOLDER_CONF = {}
 
 # Whether to enable permissions.
 CMS_PERMISSION = False
+
+CMS_GROUPS_RESTRICTED = False
+CMS_GROUPS_RESTRICTED_INHERITANCE = False
     
 # Show the publication date field in the admin, allows for future dating
 # Changing this from True to False could cause some weirdness.  If that is required,
