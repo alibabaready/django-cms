@@ -22,6 +22,9 @@ CMS_TEMPLATE_INHERITANCE_MAGIC = 'INHERIT'
 
 CMS_PLACEHOLDER_CONF = {}
 
+# Custom CSS class or id
+CMS_CUSTOM_CSS_FIELDS = False
+
 # Whether to enable permissions.
 CMS_PERMISSION = False
     

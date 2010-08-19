@@ -71,6 +71,9 @@ class Page(MpttPublisher):
     login_required = models.BooleanField(_("login required"),default=False)
     limit_visibility_in_menu = models.SmallIntegerField(_("menu visibility"), default=None, null=True, blank=True, choices=LIMIT_VISIBILITY_IN_MENU_CHOICES, db_index=True, help_text=_("limit when this page is visible in the menu"))
     
+    css_class = models.CharField(_('CSS class'), max_length=30, blank=True, null=True, help_text=_('CSS class for this page menu element'))
+    css_id = models.CharField(_('CSS ID'), max_length=30, blank=True, null=True, help_text=_('CSS ID for this page menu element'))
+    
     # Placeholders (plugins)
     placeholders = models.ManyToManyField(Placeholder, editable=False)
     
