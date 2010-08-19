@@ -20,6 +20,22 @@ CMS_TEMPLATE_INHERITANCE = True
 # This is just a STATIC GLOBAL VAR
 CMS_TEMPLATE_INHERITANCE_MAGIC = 'INHERIT'
 
+# Under Construction middleware default settings
+
+CMS_UNDER_CONSTRUCTION_TEMPLATE = 'under-construction.html'
+
+CMS_UNDER_CONSTRUCTION_ALLOWED_EXT = (
+    '.css',
+    '.js',
+    '.png',
+    '.jpg',
+    '.gif',
+)
+
+CMS_UNDER_CONSTRUCTION_ALLOWED_IPS = (
+    '127.0.0.1',
+)
+
 CMS_PLACEHOLDER_CONF = {}
 
 # Whether to enable permissions.
