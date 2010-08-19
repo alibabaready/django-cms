@@ -1,5 +1,3 @@
-from django.conf import settings
-
 from menus.base import Modifier
 from menus.menu_pool import menu_pool
 
@@ -105,25 +103,8 @@ class AuthVisibility(Modifier):
         return final
 
 
-
-class GroupVisibility(Modifier):
-    """
-    Remove nodes that require a specific group
-    """
-    def modify(self, request, nodes, namespace, root_id, post_cut, breadcrumb):
-        final = []
-        for node in nodes:
-            groups_required = node.attr.get('groups_required', None)
-            if set(groups_required.all()).intersection(request.user.groups.all()) \
-                                                or not groups_required.all():
-                final.append(node)
-        return final
-
-
 def register():
     menu_pool.register_modifier(Marker)
     menu_pool.register_modifier(AuthVisibility)
     menu_pool.register_modifier(Level)
-    if settings.CMS_GROUPS_RESTRICTED:
-        menu_pool.register_modifier(GroupVisibility)
     
